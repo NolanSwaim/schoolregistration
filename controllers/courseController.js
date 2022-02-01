@@ -9,7 +9,9 @@ module.exports.viewAll = async function(req,res){
 
 //profile
 module.exports.viewProfile= async function(req,res){
-    const course = await Course.findByPk(req.params.id);
+    const course = await Course.findByPk(req.params.id,{
+        include: 'students'
+    });
     res.render('course/profile',{course})
 }
 
@@ -34,6 +36,7 @@ module.exports.addCourse = async function(req,res){
     });
     res.redirect(`/courses/profile/${course.id}`);
 }
+
 //render edit form
 module.exports.renderEditForm = async function(req,res){
     const course = await Course.findByPk(req.params.id);
@@ -54,6 +57,7 @@ module.exports.updateCourse = async function(req,res){
         });
     res.redirect(`/courses/profile/${req.params.id}`);
 }
+
 //delete
 module.exports.deleteCourse = async function(req,res){
     await Course.destroy({
